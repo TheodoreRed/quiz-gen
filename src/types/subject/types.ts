@@ -1,11 +1,15 @@
-export type SubjectId = string;
+import { ObjectId } from "mongodb";
 
 export interface Subject {
-  _id?: SubjectId;
+  _id?: string;
   name: string;
   userId: string;
   description?: string;
-  createdTs?: string; // ISO date string
+  createdTs?: string;
+}
+
+export interface SubjectWithObjectId extends Omit<Subject, "_id"> {
+  _id: ObjectId;
 }
 
 export interface CreateSubjectBody {
@@ -18,9 +22,4 @@ export interface UpdateSubjectBody {
   _id: string;
   name: string;
   description?: string;
-}
-
-export interface UpdateSubjectBodyServer
-  extends Omit<UpdateSubjectBody, "_id"> {
-  _id: SubjectId;
 }

@@ -2,10 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import {
   CreateSubjectBody,
   Subject,
-  UpdateSubjectBodyServer,
-} from "@/app/types/subject/types";
-import { getDb } from "@/app/lib/auth/mongo/getMongoClient";
-import { getSubjectsByUserId } from "@/app/lib/subjects/db";
+  SubjectWithObjectId,
+  UpdateSubjectBody,
+} from "@/types/subject/types";
+import { getDb } from "@/lib/auth/mongo/getMongoClient";
+import { getSubjectsByUserId } from "@/lib/subjects/db";
+import { parseObjectId } from "@/common/validateObjectId";
 
 // return all subjects for a user
 export async function GET(req: NextRequest) {
@@ -93,25 +95,41 @@ export async function POST(req: NextRequest) {
 // update an existing subject
 export async function PUT(req: NextRequest) {
   const body = await req.json();
-  const { _id, name, description } = body as UpdateSubjectBodyServer;
+  const { _id, name, description } = body as UpdateSubjectBody;
 
   if (!_id || !name) {
     return NextResponse.json({ error: "Missing _id or name" }, { status: 400 });
   }
 
+  const objectId = parseObjectId(_id);
+  if (!objectId) {
+    return NextResponse.json({ error: "Invalid subject ID" }, { status: 400 });
+  }
+
+  console.log("[PUT /api/subjects] Updating subject:", {
+    objectId,
+    name,
+    description,
+  });
+
   const db = await getDb();
+  const existing = await db
+    .collection<SubjectWithObjectId>("subjects")
+    .findOne({ _id: objectId });
+
+  if (!existing) {
+    return NextResponse.json({ error: "Subject not found" }, { status: 404 });
+  }
+
   const result = await db
-    .collection<Subject>("subjects")
+    .collection<SubjectWithObjectId>("subjects")
     .updateOne(
-      { _id },
+      { _id: objectId },
       { $set: { name: name.trim(), description: description?.trim() ?? "" } }
     );
 
   if (result.modifiedCount === 0) {
-    return NextResponse.json(
-      { error: "Subject not found or unchanged" },
-      { status: 404 }
-    );
+    return NextResponse.json({ error: "No changes made" }, { status: 200 });
   }
 
   return NextResponse.json({ message: "Subject updated" }, { status: 200 });

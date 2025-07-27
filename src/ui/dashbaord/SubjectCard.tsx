@@ -8,8 +8,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
-
-import { Subject } from "@/app/types/subject/types";
+import { Subject } from "@/types/subject/types";
 
 interface SubjectCardProps {
   subject: Subject;

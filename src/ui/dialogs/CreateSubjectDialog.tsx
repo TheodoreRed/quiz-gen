@@ -7,35 +7,39 @@ import {
   Button,
 } from "@mui/material";
 
-interface CreateSubjectDialogProps {
+interface SubjectDialogProps {
   open: boolean;
-  newName: string;
-  setNewName: (name: string) => void;
-  newDescription: string;
-  setNewDescription: (description: string) => void;
+  name: string;
+  setName: (name: string) => void;
+  description: string;
+  setDescription: (desc: string) => void;
   setOpen: (open: boolean) => void;
-  onCreate: () => void;
+  onSubmit: () => void;
+  mode: "create" | "edit";
 }
 
-const CreateSubjectDialog: React.FC<CreateSubjectDialogProps> = ({
+const CreateSubjectDialog: React.FC<SubjectDialogProps> = ({
   open,
-  newName,
+  name,
   setOpen,
-  setNewName,
-  onCreate,
-  newDescription,
-  setNewDescription,
+  setName,
+  onSubmit,
+  mode,
+  description,
+  setDescription,
 }) => (
   <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="xs">
-    <DialogTitle>Create subject</DialogTitle>
+    <DialogTitle>
+      {mode === "create" ? "Create Subject" : "Edit Subject"}
+    </DialogTitle>
     <DialogContent>
       <TextField
         autoFocus
         margin="dense"
         label="Subject name"
         fullWidth
-        value={newName}
-        onChange={(e) => setNewName(e.target.value)}
+        value={name}
+        onChange={(e) => setName(e.target.value)}
       />
       <TextField
         margin="dense"
@@ -43,13 +47,13 @@ const CreateSubjectDialog: React.FC<CreateSubjectDialogProps> = ({
         fullWidth
         multiline
         rows={4}
-        value={newDescription}
-        onChange={(e) => setNewDescription(e.target.value)}
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
       />
     </DialogContent>
     <DialogActions>
       <Button onClick={() => setOpen(false)}>Cancel</Button>
-      <Button onClick={onCreate} variant="contained">
+      <Button onClick={onSubmit} variant="contained">
         Save
       </Button>
     </DialogActions>

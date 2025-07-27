@@ -1,8 +1,8 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { authOptions } from "@/app/lib/auth/auth";
-import Dashboard from "@/app/ui/dashbaord/Dashboard";
-import { getSubjectsByUserId } from "@/app/lib/subjects/db";
+import { authOptions } from "@/lib/auth/auth";
+import Dashboard from "@/ui/dashbaord/Dashboard";
+import { getSubjectsByUserId } from "@/lib/subjects/db";
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);

@@ -2,7 +2,7 @@ import {
   Subject,
   CreateSubjectBody,
   UpdateSubjectBody,
-} from "@/app/types/subject/types";
+} from "@/types/subject/types";
 
 // GET all subjects for a user
 export async function fetchSubjects(userId: string): Promise<Subject[]> {

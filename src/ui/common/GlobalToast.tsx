@@ -2,8 +2,7 @@
 
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
-
-import { useToastStore } from "@/app/store/toastStore";
+import { useToastStore } from "@/store/toastStore";
 
 export default function GlobalToast() {
   const { open, message, severity, closeToast } = useToastStore();

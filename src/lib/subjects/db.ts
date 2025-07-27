@@ -1,4 +1,4 @@
-import { Subject } from "@/app/types/subject/types";
+import { Subject } from "@/types/subject/types";
 import { getDb } from "../auth/mongo/getMongoClient";
 import { WithId } from "mongodb";
 

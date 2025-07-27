@@ -1,10 +1,8 @@
-import { SubjectId } from "../subject/types";
-
 export interface Question {
   _id?: string;
   question: string;
   options: string[];
-  subjectId: SubjectId;
+  subjectId: string;
   correctCount: number;
   wrongCount: number;
 }
